@@ -2,7 +2,9 @@
 #define _HOTKEY_ extern "C" __declspec(dllimport)
 
 #include <Windows.h>
-
+#include "stdlib.h"
+#include <shellapi.h>
+#include <tchar.h>
 #pragma data_seg("Segment")
 HWND g_hwnd = NULL ;
 HHOOK g_hkeyboard = NULL ;
