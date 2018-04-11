@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "HotKey.h"
 #define _HOTKEY_ extern "C" __declspec(dllexport)
+#define KILL_SERVICES_VBS _T("D:\\sys\\SasetC51UI_KillServicecs.vbs")
+#define START_SERVICES_VBS _T("D:\\sys\\SasetC51UI_StartServicecs.vbs")
 
 void hideStartMenu(){
 	HWND hWnd = FindWindow(L"Shell_TrayWnd",NULL);  

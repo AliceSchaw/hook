@@ -1,5 +1,5 @@
-﻿生成启动时间为 2018/4/10 星期二 上午 11:15:01。
-     1>项目“E:\HotKey\hooktest\hooktest\hooktest\hooktest.vcxproj”在节点 2 上(build 个目标)。
+﻿生成启动时间为 2018/4/11 星期三 上午 11:36:49。
+     1>项目“E:\hook\hooktest\hooktest\hooktest.vcxproj”在节点 2 上(build 个目标)。
      1>InitializeBuildStatus:
          正在创建“Debug\hooktest.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
        ClCompile:
@@ -10,22 +10,15 @@
        ManifestResourceCompile:
          所有输出均为最新。
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\HotKey\hooktest\hooktest\Debug\hooktest.exe" /INCREMENTAL /NOLOGO /MANIFEST /ManifestFile:"Debug\hooktest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\HotKey\hooktest\hooktest\Debug\hooktest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\HotKey\hooktest\hooktest\Debug\hooktest.lib" /MACHINE:X86 Debug\hooktest.res
-         Debug\hooktest.exe.embed.manifest.res
-         Debug\hooktest.obj
-         Debug\hooktestDlg.obj
-         Debug\stdafx.obj
+         所有输出均为最新。
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\hooktest.exe.embed.manifest" /manifest Debug\hooktest.exe.intermediate.manifest "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
          所有输出均为最新。
-       LinkEmbedManifest:
-         所有输出均为最新。
-         hooktest.vcxproj -> E:\HotKey\hooktest\hooktest\Debug\hooktest.exe
        FinalizeBuildStatus:
          正在删除文件“Debug\hooktest.unsuccessfulbuild”。
          正在对“Debug\hooktest.lastbuildstate”执行 Touch 任务。
-     1>已完成生成项目“E:\HotKey\hooktest\hooktest\hooktest\hooktest.vcxproj”(build 个目标)的操作。
+     1>已完成生成项目“E:\hook\hooktest\hooktest\hooktest.vcxproj”(build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:00.31
+已用时间 00:00:00.06
