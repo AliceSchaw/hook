@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/4/11 星期三 上午 11:34:59。
+﻿生成启动时间为 2018/4/11 星期三 下午 6:04:34。
      1>项目“E:\hook\HotKey\HotKey.vcxproj”在节点 2 上(build 个目标)。
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(299,5): warning MSB8004: Output 目录未以斜杠结尾。此生成实例将添加斜杠，因为必须有这个斜杠才能正确计算 Output 目录。
      1>InitializeBuildStatus:
@@ -10,9 +10,9 @@
          HotKey.cpp
      1>e:\hook\hotkey\hotkey.cpp(3): warning C4005: “_HOTKEY_”: 宏重定义
                  e:\hook\hotkey\hotkey.h(2) : 参见“_HOTKEY_”的前一个定义
-     1>e:\hook\hotkey\hotkey.cpp(93): warning C4273: “load_hook”: dll 链接不一致
+     1>e:\hook\hotkey\hotkey.cpp(95): warning C4273: “load_hook”: dll 链接不一致
                  e:\hook\hotkey\hotkey.h(16) : 参见“load_hook”的前一个定义
-     1>e:\hook\hotkey\hotkey.cpp(103): warning C4273: “upload_hook”: dll 链接不一致
+     1>e:\hook\hotkey\hotkey.cpp(105): warning C4273: “upload_hook”: dll 链接不一致
                  e:\hook\hotkey\hotkey.h(17) : 参见“upload_hook”的前一个定义
        ManifestResourceCompile:
          所有输出均为最新。
@@ -34,4 +34,4 @@
 
 生成成功。
 
-已用时间 00:00:00.28
+已用时间 00:00:00.24

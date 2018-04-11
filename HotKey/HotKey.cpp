@@ -26,65 +26,67 @@ void restartService(){
 }
 LRESULT CALLBACK Hotkey_Filter(int nCode, WPARAM wParam, LPARAM lParam)
 {
-		LPKBDLLHOOKSTRUCT pKbStruct = (LPKBDLLHOOKSTRUCT)lParam;
+	bool isClick = false;  
+    PKBDLLHOOKSTRUCT LowKey = NULL;   //该结构体包含底层键盘输入事件的信息  
          
 		WORD Ctrl_Pressed = HIBYTE( GetAsyncKeyState( VK_CONTROL ) );
-		WORD Alt_Pressed = HIBYTE( GetAsyncKeyState(VK_MENU) );
-        /*if(wParam == WM_KEYUP){
-			if(pKbStruct->vkCode>64&&pKbStruct->vkCode<91){
-				PostMessage(g_hwnd,MSG_HAPPEN,(pKbStruct->vkCode)-65,lParam) ;
+		WORD Alt_Pressed = HIBYTE( GetAsyncKeyState(VK_MENU) ); 
+    if (nCode == HC_ACTION)      //HC_ACTION  表示有消息  
+    {  
+        LowKey = (PKBDLLHOOKSTRUCT)lParam;  
+        switch (wParam)  
+        {  
+        case WM_KEYDOWN:  
+        case WM_SYSKEYDOWN:  
+        case WM_KEYUP: {
+			if(LowKey->vkCode=='R'){
+				if (Ctrl_Pressed && Alt_Pressed ){
+					isClick = 1; 
+					//WinExec(KILL_SERVICES_VBS, SW_SHOWMAXIMIZED);  
+					//system(KILL_SERVICES_VBS);
+					//system(START_SERVICES_VBS);
+					restartService();
+					   
+				}
 			}
-		}*/
-		if(pKbStruct->vkCode=='B'){
-			if(Ctrl_Pressed && Alt_Pressed && (wParam == WM_KEYUP)){
-				//WinExec(KILL_SERVICES_VBS, SW_SHOWMAXIMIZED);  
-				//system(KILL_SERVICES_VBS);
-				//system(START_SERVICES_VBS);
-				restartService();
+			if(LowKey->vkCode=='F'){
+				if(Ctrl_Pressed && Alt_Pressed ){
+					isClick = 1; 
+					if(GetFileAttributes(KILL_SERVICES_VBS)<0)//==-1
+					{
+						//文件不存在！
+					}
+					else{
+						//存在
+					}
+				}
 			}
-
+			break;
 		}
-        //屏蔽 Windows 热键
-        if(pKbStruct->vkCode == VK_LWIN || pKbStruct->vkCode == VK_RWIN)
-        {
-            return TRUE;
-        }
-         
-        //屏蔽 Ctrl + Esc 热键
-        if(pKbStruct->vkCode == VK_ESCAPE)
-        {
-            if( Ctrl_Pressed )
-                return TRUE;
-        }
-         
-        //屏蔽 Alt + '` ~'
-        if(pKbStruct->vkCode == VK_OEM_3)
-        {
-            if( Alt_Pressed )
-                return TRUE;
-        }
-         
-        //屏蔽 Ctrl + Alt + Del
-        if(pKbStruct->vkCode == VK_DELETE || pKbStruct->vkCode == VK_DECIMAL)
-        {
-            if(Ctrl_Pressed && Alt_Pressed)
-                return TRUE;
-        }
-         
-        //屏蔽 Alt + Tab
-        if(pKbStruct->vkCode == VK_TAB)
-        {
-            if( Alt_Pressed )
-                return TRUE;
-        }
-         
-        //屏蔽 Alt + Esc
-        if(pKbStruct->vkCode = VK_ESCAPE)
-        {
-            if( Alt_Pressed )
-                return TRUE;
-        }
-        return 0; //回调
+        case WM_SYSKEYUP:  
+            {       // 屏蔽Win  
+                isClick = (LowKey->vkCode == VK_LWIN) || (LowKey->vkCode == VK_RWIN) ||    
+                    // 屏蔽Alt+F4  
+                    ((LowKey->vkCode == VK_F4) && ((LowKey->flags & LLKHF_ALTDOWN) != 0)) ||  
+                    // 屏蔽Alt+Tab  
+                    ((LowKey->vkCode == VK_TAB) && ((LowKey->flags & LLKHF_ALTDOWN) != 0)) ||  
+                    // 屏蔽Alt+Esc  
+                    ((LowKey->vkCode == VK_ESCAPE) && ((LowKey->flags & LLKHF_ALTDOWN) != 0)) ||  
+                    // 屏蔽Ctrl+Esc  
+                    ((LowKey->vkCode == VK_ESCAPE) && (Ctrl_Pressed != 0))||
+					// 屏蔽Alt+~`
+					((LowKey->vkCode == VK_OEM_3) && (Alt_Pressed != 0));  
+                break;  
+            }  
+        default:  
+            break;  
+        }  
+    }  
+    if (isClick)  
+    {  
+        return 1;  
+    }  
+    return CallNextHookEx(g_hlowKeyHook,nCode,wParam,lParam);  //传给下一个钩子  
 }
 
 

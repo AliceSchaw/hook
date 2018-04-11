@@ -11,41 +11,59 @@ HHOOK g_hlowKeyHook = NULL;     //低级键盘钩子句柄
 HHOOK g_hMouse = NULL;          //鼠标钩子句柄  
   
 //低级键盘钩子  
-LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)  
-{  
-    bool isClick = false;  
+
+LRESULT CALLBACK Hotkey_Filter(int nCode, WPARAM wParam, LPARAM lParam)
+{
+	bool isClick = false;  
     PKBDLLHOOKSTRUCT LowKey = NULL;   //该结构体包含底层键盘输入事件的信息  
-      
+         
+		WORD Ctrl_Pressed = HIBYTE( GetAsyncKeyState( VK_CONTROL ) );
+		WORD Alt_Pressed = HIBYTE( GetAsyncKeyState(VK_MENU) ); 
     if (nCode == HC_ACTION)      //HC_ACTION  表示有消息  
     {  
         LowKey = (PKBDLLHOOKSTRUCT)lParam;  
         switch (wParam)  
         {  
         case WM_KEYDOWN:  
-            {  
-                isClick = 1;  
-                if (LowKey->vkCode == VK_F8) // 后门  
-                {  
-                //  ::MessageBox(NULL,"触发钩子后门程序，正在卸载钩子~~关闭程序","提示",MB_OK);  
-                    SendMessage(g_hWnd, WM_CLOSE, 0, 0);   //发送关闭主窗体消息  
-                    UnhookWindowsHookEx(g_hlowKeyHook);    //卸载低级键盘钩子  
-                    UnhookWindowsHookEx(g_hMouse);         //卸载低级鼠标钩子  
-                }  
-                break;  
-            }  
         case WM_SYSKEYDOWN:  
-        case WM_KEYUP:  
+        case WM_KEYUP: {
+			if(LowKey->vkCode=='R'){
+				if (Ctrl_Pressed && Alt_Pressed ){
+					//WinExec(KILL_SERVICES_VBS, SW_SHOWMAXIMIZED);  
+					//system(KILL_SERVICES_VBS);
+					//system(START_SERVICES_VBS);
+					isClick = 1; 
+					restartService();
+					   
+				}
+			}
+			if(LowKey->vkCode=='F'){
+				if(Ctrl_Pressed && Alt_Pressed ){
+					isClick = 1; 
+					if(GetFileAttributes(KILL_SERVICES_VBS)<0)//==-1
+					{
+						//文件不存在！
+					}
+					else{
+						//存在
+					}
+				}
+			}
+			break;
+		}
         case WM_SYSKEYUP:  
-            {              // 屏蔽Win  
+            {       // 屏蔽Win  
                 isClick = (LowKey->vkCode == VK_LWIN) || (LowKey->vkCode == VK_RWIN) ||    
-                    //屏蔽Alt+F4  
+                    // 屏蔽Alt+F4  
                     ((LowKey->vkCode == VK_F4) && ((LowKey->flags & LLKHF_ALTDOWN) != 0)) ||  
                     // 屏蔽Alt+Tab  
                     ((LowKey->vkCode == VK_TAB) && ((LowKey->flags & LLKHF_ALTDOWN) != 0)) ||  
                     // 屏蔽Alt+Esc  
                     ((LowKey->vkCode == VK_ESCAPE) && ((LowKey->flags & LLKHF_ALTDOWN) != 0)) ||  
                     // 屏蔽Ctrl+Esc  
-                    ((LowKey->vkCode == VK_ESCAPE) && ((GetKeyState(VK_CONTROL) & 0x8000) != 0));  
+                    ((LowKey->vkCode == VK_ESCAPE) && (Ctrl_Pressed != 0))||
+		// 屏蔽Alt+~`
+		((LowKey->vkCode == VK_OEM_3) && (Alt_Pressed != 0));  
                 break;  
             }  
         default:  
@@ -57,7 +75,7 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
         return 1;  
     }  
     return CallNextHookEx(g_hlowKeyHook,nCode,wParam,lParam);  //传给下一个钩子  
-}  
+}
   
 //屏蔽所有鼠标消息  
 LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam)  
