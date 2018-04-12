@@ -1,14 +1,13 @@
 #include "stdafx.h"
 #include "HotKey.h"
 #define _HOTKEY_ extern "C" __declspec(dllexport)
-#define KILL_SERVICES_VBS _T("D:\\sys\\SasetC51UI_KillServicecs.vbs")
-#define START_SERVICES_VBS _T("D:\\sys\\SasetC51UI_StartServicecs.vbs")
 
 void hideStartMenu(){
 	HWND hWnd = FindWindow(L"Shell_TrayWnd",NULL);  
 	HWND hStar =FindWindowEx(NULL,NULL,L"Button",NULL);
 
 	ShowWindow(hWnd,SW_HIDE);
+	Sleep(1000);
 	ShowWindow(hStar,SW_HIDE);
 }
 
@@ -37,32 +36,42 @@ LRESULT CALLBACK Hotkey_Filter(int nCode, WPARAM wParam, LPARAM lParam)
         switch (wParam)  
         {  
         case WM_KEYDOWN:  
-        case WM_SYSKEYDOWN:  
-        case WM_KEYUP: {
+		{
 			if(LowKey->vkCode=='R'){
 				if (Ctrl_Pressed && Alt_Pressed ){
-					isClick = 1; 
 					//WinExec(KILL_SERVICES_VBS, SW_SHOWMAXIMIZED);  
 					//system(KILL_SERVICES_VBS);
 					//system(START_SERVICES_VBS);
+					isClick = 1; 
 					restartService();
 					   
+				}
+			}
+			if(LowKey->vkCode=='E'){
+				if(Ctrl_Pressed && Alt_Pressed ){
+					isClick = 1; 
+					ExVBSCmd(START_TASK_VBS);
 				}
 			}
 			if(LowKey->vkCode=='F'){
 				if(Ctrl_Pressed && Alt_Pressed ){
 					isClick = 1; 
-					if(GetFileAttributes(KILL_SERVICES_VBS)<0)//==-1
+					if(GetFileAttributes(SRC_FILES_FOLDER_DIR)<0)//==-1
 					{
 						//文件不存在！
+						
 					}
 					else{
 						//存在
+						//CopyFile(SRC_FILES_DIR,DST_FILES_DIR,FALSE);
+						ExVBSCmd(COPY_SERVICES_VBS);
 					}
 				}
 			}
 			break;
 		}
+        case WM_SYSKEYDOWN:  
+        case WM_KEYUP:
         case WM_SYSKEYUP:  
             {       // 屏蔽Win  
                 isClick = (LowKey->vkCode == VK_LWIN) || (LowKey->vkCode == VK_RWIN) ||    
